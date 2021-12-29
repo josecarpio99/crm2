@@ -580,9 +580,12 @@ if (!function_exists('send_app_mail')) {
 
         $ci = new Security_Controller(false);
         $login_user = $ci->login_user;
-        $is_user_smtp_setup = ( !empty($login_user->email_smtp_host) && !empty($login_user->email_smtp_port)
-                               && !empty($login_user->email_smtp_user) && !empty($login_user->email_smtp_security_type)
-                               && !empty(decode_password($login_user->email_smtp_password, "email_smtp_pass")) ) ? true : false;
+        $is_user_smtp_setup = false;
+        if($login_user) {
+            $is_user_smtp_setup = ( !empty($login_user->email_smtp_host) && !empty($login_user->email_smtp_port)
+                                   && !empty($login_user->email_smtp_user) && !empty($login_user->email_smtp_security_type)
+                                   && !empty(decode_password($login_user->email_smtp_password, "email_smtp_pass")) ) ? true : false;
+        }
 
         //check mail sending method from settings
         if (get_setting("email_protocol") === "smtp") {
@@ -611,8 +614,8 @@ if (!function_exists('send_app_mail')) {
         $email->setNewline("\r\n");
         $email->setCRLF("\r\n");
 
-        $fromAddress = $login_user->email;
-        $fromName = $login_user->first_name.' '.$login_user->last_name;
+        $fromAddress = $is_user_smtp_setup ? $login_user->email : get_setting("email_sent_from_address");
+        $fromName = $is_user_smtp_setup ? $login_user->first_name.' '.$login_user->last_name : get_setting("email_sent_from_name");
 
         $email->setFrom($fromAddress, $fromName);
 
