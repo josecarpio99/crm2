@@ -614,7 +614,7 @@ if (!function_exists('send_app_mail')) {
         $email->setNewline("\r\n");
         $email->setCRLF("\r\n");
 
-        $fromAddress = $is_user_smtp_setup ? $login_user->email : get_setting("email_sent_from_address");
+        $fromAddress = $is_user_smtp_setup ? $login_user->email_smtp_user : get_setting("email_sent_from_address");
         $fromName = $is_user_smtp_setup ? $login_user->first_name.' '.$login_user->last_name : get_setting("email_sent_from_name");
 
         $email->setFrom($fromAddress, $fromName);
@@ -661,9 +661,10 @@ if (!function_exists('send_app_mail')) {
             return true;
         } else {
             //show error message in none production version
-            if (ENVIRONMENT !== 'production') {
-                throw new \Exception($email->printDebugger());
-            }
+            throw new \Exception($email->printDebugger());
+            // if (ENVIRONMENT !== 'production') {
+            //     throw new \Exception($email->printDebugger());
+            // }
             return false;
         }
     }
