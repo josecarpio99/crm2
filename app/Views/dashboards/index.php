@@ -70,7 +70,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-8">
 
             <?php if ($show_projects_count || $show_clock_status || $show_total_hours_worked || $show_total_project_hours) { ?>
                 <div class="row">
@@ -123,7 +123,7 @@
 
         </div>
 
-        <div class="col-md-4 widget-container">
+        <!-- <div class="col-md-4 widget-container">
             <div class="card bg-white">
                 <div class="card-header">
                     <i data-feather="clock" class="icon-16"></i>&nbsp;  <?php echo app_lang("project_timeline"); ?>
@@ -136,9 +136,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="row">
                 <div class="col-md-12 widget-container">
                     <?php

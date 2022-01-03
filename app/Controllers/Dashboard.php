@@ -33,10 +33,10 @@ class Dashboard extends Security_Controller {
             $view_data["show_income_vs_expenses"] = get_array_value($widgets, "income_vs_expenses");
             $view_data["show_invoice_statistics"] = get_array_value($widgets, "invoice_statistics");
             $view_data["show_ticket_status"] = get_array_value($widgets, "ticket_status");
-            $view_data["show_clock_status"] = get_array_value($widgets, "clock_status");
-            $view_data["show_projects_count"] = get_array_value($widgets, "open_projects");
-            $view_data["show_total_hours_worked"] = get_array_value($widgets, "total_hours_worked");
-            $view_data["show_total_project_hours"] = get_array_value($widgets, "total_project_hours");
+            $view_data["show_clock_status"] = false /*get_array_value($widgets, "clock_status")*/;
+            $view_data["show_projects_count"] = false /*get_array_value($widgets, "open_projects")*/;
+            $view_data["show_total_hours_worked"] = false /*get_array_value($widgets, "total_hours_worked")*/;
+            $view_data["show_total_project_hours"] = false /*get_array_value($widgets, "total_project_hours")*/;
 
             echo $this->template->rander("dashboards/index", $view_data);
         } else {
