@@ -289,7 +289,6 @@ class Clients extends Security_Controller {
 
         $row_data = array($data->id,
             anchor(get_uri("clients/view/" . $data->id), $data->company_name),
-            $data->primary_contact ? $primary_contact : "",
             $group_list,
             to_currency($data->invoice_value, $data->currency_symbol),
             to_currency($data->payment_received, $data->currency_symbol),
@@ -335,7 +334,7 @@ class Clients extends Security_Controller {
                 $view_data["view_type"] = "";
 
                 //even it's hidden, admin can view all information of client
-                $view_data['hidden_menu'] = array("");
+                $view_data['hidden_menu'] = array("projects");
 
                 return $this->template->rander("clients/view", $view_data);
             } else {

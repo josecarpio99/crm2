@@ -38,10 +38,7 @@
         <?php echo view("clients/info_widgets/index"); ?>
     </div>
 
-    <ul id="client-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs scrollable-tabs ml15 mr15" role="tablist">
-        <li><a  role="presentation" href="<?php echo_uri("clients/contacts/" . $client_info->id); ?>" data-bs-target="#client-contacts"> <?php echo app_lang('contacts'); ?></a></li>
-        <li><a  role="presentation" href="<?php echo_uri("clients/company_info_tab/" . $client_info->id); ?>" data-bs-target="#client-info"> <?php echo app_lang('client_info'); ?></a></li>
-        <li><a  role="presentation" href="<?php echo_uri("clients/projects/" . $client_info->id); ?>" data-bs-target="#client-projects"><?php echo app_lang('projects'); ?></a></li>
+    <ul id="client-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs scrollable-tabs ml15 mr15" role="tablist">        
 
         <?php if ($show_invoice_info) { ?>
             <li><a  role="presentation" href="<?php echo_uri("clients/invoices/" . $client_info->id); ?>" data-bs-target="#client-invoices"> <?php echo app_lang('invoices'); ?></a></li>
@@ -89,10 +86,7 @@
         ?>
     </ul>
     <div class="tab-content ml15 mr15">
-        <div role="tabpanel" class="tab-pane fade" id="client-projects"></div>
         <div role="tabpanel" class="tab-pane fade" id="client-files"></div>
-        <div role="tabpanel" class="tab-pane fade" id="client-info"></div>
-        <div role="tabpanel" class="tab-pane fade" id="client-contacts"></div>
         <div role="tabpanel" class="tab-pane fade" id="client-invoices"></div>
         <div role="tabpanel" class="tab-pane fade" id="client-payments"></div>
         <div role="tabpanel" class="tab-pane fade" id="client-estimates"></div>

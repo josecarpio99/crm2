@@ -39,7 +39,6 @@
             columns: [
             {title: "<?php echo app_lang("id") ?>", "class": "text-center w50"},
             {title: "<?php echo app_lang("name") ?>"},
-            {title: "<?php echo app_lang("details") ?>"},
             {title: "<?php echo app_lang("client_groups") ?>"},
             {visible: showInvoiceInfo, searchable: showInvoiceInfo, title: "<?php echo app_lang("total_invoiced") ?>"},
             {visible: showInvoiceInfo, searchable: showInvoiceInfo, title: "<?php echo app_lang("payment_received") ?>"},
