@@ -43,16 +43,13 @@
             <li><a  role="presentation" href="<?php echo_uri("team_members/job_info/" . $user_info->id); ?>" data-bs-target="#tab-job-info"> <?php echo app_lang('job_info'); ?></a></li>
         <?php } ?>
 
-        <?php if ($show_account_settings) { ?>
+        <?php if ($show_account_settings && $login_user->is_admin) { ?>
             <li><a role="presentation" href="<?php echo_uri("team_members/account_settings/" . $user_info->id); ?>" data-bs-target="#tab-account-settings"> <?php echo app_lang('account_settings'); ?></a></li>
         <?php } ?>
 
         <?php if ($login_user->id == $user_info->id) { ?>
             <li><a role="presentation" href="<?php echo_uri("team_members/my_preferences/" . $user_info->id); ?>" data-bs-target="#tab-my-preferences"> <?php echo app_lang('my_preferences'); ?></a></li>
-        <?php } ?>
-        <?php if ($login_user->id == $user_info->id) { ?>
-            <li><a role="presentation" href="<?php echo_uri("left_menus/index/user"); ?>" data-bs-target="#tab-user-left-menu"> <?php echo app_lang('left_menu'); ?></a></li>
-        <?php } ?>
+        <?php } ?>        
 
         <?php if ($show_general_info) { ?>
             <li><a  role="presentation" href="<?php echo_uri("team_members/files/" . $user_info->id); ?>" data-bs-target="#tab-files"> <?php echo app_lang('files'); ?></a></li>
