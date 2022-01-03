@@ -1,17 +1,9 @@
 <div class="mt20">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <?php echo total_clients_widget($show_own_clients_only_user_id, $allowed_client_groups); ?>
         </div>
-        <div class="col-md-3">
-            <?php echo total_contacts_widget($show_own_clients_only_user_id, $allowed_client_groups); ?>
-        </div>
-        <div class="col-md-3">
-            <?php echo client_contacts_logged_in_widget("logged_in_today", $show_own_clients_only_user_id, $allowed_client_groups); ?>
-        </div>
-        <div class="col-md-3">
-            <?php echo client_contacts_logged_in_widget("logged_in_seven_days", $show_own_clients_only_user_id, $allowed_client_groups); ?>
-        </div>
+      
     </div>
 
     <?php if ($show_invoice_info) { ?>
