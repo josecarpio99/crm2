@@ -367,8 +367,7 @@ class Invoices extends Security_Controller {
             app_redirect("forbidden");
         }
 
-        $custom_fields = $this->Custom_fields_model->get_available_fields_for_table("invoices", $this->login_user->is_admin, $this->login_user->user_type);
-
+        $custom_fields = $this->Custom_fields_model->get_available_fields_for_table("invoices", $this->login_user->is_admin, $this->login_user->user_type);        
         $options = array(
             "status" => $this->request->getPost("status"),
             "start_date" => $this->request->getPost("start_date"),

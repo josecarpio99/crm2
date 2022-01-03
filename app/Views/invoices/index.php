@@ -2,10 +2,10 @@
     <div class="card clearfix">
         <ul id="invoices-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
             <li class="title-tab"><h4 class="pl15 pt10 pr15"><?php echo app_lang("invoices"); ?></h4></li>
-            <li><a id="monthly-expenses-button"  role="presentation"  href="javascript:;" data-bs-target="#monthly-invoices"><?php echo app_lang("monthly"); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("invoices/yearly/"); ?>" data-bs-target="#yearly-invoices"><?php echo app_lang('yearly'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("invoices/custom/"); ?>" data-bs-target="#custom-invoices"><?php echo app_lang('custom'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("invoices/recurring/"); ?>" data-bs-target="#recurring-invoices"><?php echo app_lang('recurring'); ?></a></li>
+            <!-- <li><a id="monthly-expenses-button"  role="presentation"  href="javascript:;" data-bs-target="#monthly-invoices"><?php echo app_lang("monthly"); ?></a></li> -->
+            <!-- <li><a role="presentation" href="<?php echo_uri("invoices/yearly/"); ?>" data-bs-target="#yearly-invoices"><?php echo app_lang('yearly'); ?></a></li> -->
+            <li class="d-none"><a role="presentation" href="<?php echo_uri("invoices/custom/"); ?>" data-bs-target="#custom-invoices"><?php echo app_lang('custom'); ?></a></li>
+            <!-- <li><a role="presentation" href="<?php echo_uri("invoices/recurring/"); ?>" data-bs-target="#recurring-invoices"><?php echo app_lang('recurring'); ?></a></li> -->
             <div class="tab-title clearfix no-border">
                 <div class="title-button-group">
                     <?php if ($can_edit_invoices) { ?>
@@ -18,15 +18,20 @@
         </ul>
 
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade" id="monthly-invoices">
+            <!-- <div role="tabpanel" class="tab-pane fade" id="monthly-invoices">
                 <div class="table-responsive">
                     <table id="monthly-invoice-table" class="display" cellspacing="0" width="100%">   
                     </table>
                 </div>
+            </div> -->
+            <!-- <div role="tabpanel" class="tab-pane fade" id="yearly-invoices"></div> -->
+            <div role="tabpanel" class="tab-pane fade" id="custom-invoices">
+                <div class="table-responsive">
+                    <table id="custom-invoice-table" class="display" cellspacing="0" width="100%">   
+                    </table>
+                </div>
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="yearly-invoices"></div>
-            <div role="tabpanel" class="tab-pane fade" id="custom-invoices"></div>
-            <div role="tabpanel" class="tab-pane fade" id="recurring-invoices"></div>
+            <!-- <div role="tabpanel" class="tab-pane fade" id="recurring-invoices"></div> -->
         </div>
     </div>
 </div>
@@ -35,7 +40,7 @@
     loadInvoicesTable = function (selector, dateRange) {
     var customDatePicker = "";
     if (dateRange === "custom") {
-    customDatePicker = [{startDate: {name: "start_date", value: moment().format("YYYY-MM-DD")}, endDate: {name: "end_date", value: moment().format("YYYY-MM-DD")}, showClearButton: true}];
+    customDatePicker = [{startDate: {name: "start_date", value: moment().startOf('year').format("YYYY-MM-DD")}, endDate: {name: "end_date", value: moment().endOf('year').format("YYYY-MM-DD")}, showClearButton: true}];
     dateRange = "";
     }
 
@@ -45,7 +50,7 @@
     }
 
     $(selector).appTable({
-    source: '<?php echo_uri("invoices/list_data") ?>',
+            source: '<?php echo_uri("invoices/list_data") ?>',
             dateRangeType: dateRange,
             order: [[0, "desc"]],
             filterDropdown: [
@@ -58,12 +63,11 @@
             rangeDatepicker: customDatePicker,
             columns: [
             {title: "<?php echo app_lang("invoice_id") ?>", "class": "w10p"},
-            {title: "<?php echo app_lang("client") ?>", "class": ""},
-            {title: "<?php echo app_lang("project") ?>", "class": "w15p"},
+            {title: "<?php echo app_lang("client") ?>", "class": "w15p"},
             {visible: false, searchable: false},
-            {title: "<?php echo app_lang("bill_date") ?>", "class": "w10p", "iDataSort": 3},
+            {title: "<?php echo app_lang("bill_date") ?>", "class": "w15p", "iDataSort": 3},
             {visible: false, searchable: false},
-            {title: "<?php echo app_lang("due_date") ?>", "class": "w10p", "iDataSort": 5},
+            {title: "<?php echo app_lang("due_date") ?>", "class": "w15p", "iDataSort": 5},
             {title: "<?php echo app_lang("total_invoiced") ?>", "class": "w10p text-right"},
             {title: "<?php echo app_lang("payment_received") ?>", "class": "w10p text-right"},
             {title: "<?php echo app_lang("status") ?>", "class": "w10p text-center"}
@@ -79,6 +83,6 @@
     });
     };
     $(document).ready(function () {
-    loadInvoicesTable("#monthly-invoice-table", "monthly");
+    loadInvoicesTable("#custom-invoice-table", "custom");
     });
 </script>

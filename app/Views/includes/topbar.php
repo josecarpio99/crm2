@@ -19,15 +19,15 @@
                 if (!in_array("to_do", $hidden_topbar_menus)) {
                     echo view("todo/topbar_icon");
                 }
-                if (!in_array("favorite_projects", $hidden_topbar_menus) && !(get_setting("disable_access_favorite_project_option_for_clients") && $login_user->user_type == "client")) {
-                    echo view("projects/star/topbar_icon");
-                }
-                if (!in_array("favorite_clients", $hidden_topbar_menus)) {
-                    echo view("clients/star/topbar_icon");
-                }
-                if (!in_array("dashboard_customization", $hidden_topbar_menus) && (get_setting("disable_new_dashboard_icon") != 1)) {
-                    echo view("dashboards/list/topbar_icon");
-                }
+                // if (!in_array("favorite_projects", $hidden_topbar_menus) && !(get_setting("disable_access_favorite_project_option_for_clients") && $login_user->user_type == "client")) {
+                //     echo view("projects/star/topbar_icon");
+                // }
+                // if (!in_array("favorite_clients", $hidden_topbar_menus)) {
+                //     echo view("clients/star/topbar_icon");
+                // }
+                // if (!in_array("dashboard_customization", $hidden_topbar_menus) && (get_setting("disable_new_dashboard_icon") != 1)) {
+                //     echo view("dashboards/list/topbar_icon");
+                // }
                 ?>
 
                 <?php
@@ -57,8 +57,8 @@
 
                     <?php if (!in_array("language", $hidden_topbar_menus) && (($login_user->user_type == "staff" && !get_setting("disable_language_selector_for_team_members")) || ($login_user->user_type == "client" && !get_setting("disable_language_selector_for_clients")))) { ?>
 
-                        <li class="nav-item dropdown">
-                            <?php echo js_anchor("<i data-feather='globe' class='icon'></i>", array("id" => "personal-language-icon", "class" => "nav-link dropdown-toggle", "data-bs-toggle" => "dropdown")); ?>
+                        <!-- <li class="nav-item dropdown">
+                            <?php /*echo js_anchor("<i data-feather='globe' class='icon'></i>", array("id" => "personal-language-icon", "class" => "nav-link dropdown-toggle", "data-bs-toggle" => "dropdown"));*/ ?>
 
                             <ul class="dropdown-menu dropdown-menu-end language-dropdown">
                                 <li>
@@ -84,11 +84,11 @@
                                     ?>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
 
                     <?php } ?>
 
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <?php echo js_anchor("<i data-feather='bell' class='icon'></i>", array("id" => "web-notification-icon", "class" => "nav-link dropdown-toggle", "data-bs-toggle" => "dropdown")); ?>
                         <div class="dropdown-menu dropdown-menu-end notification-dropdown w400">
                             <div class="dropdown-details card bg-white m0">
@@ -100,7 +100,7 @@
                                 <?php echo anchor("notifications", app_lang('see_all')); ?>
                             </div>
                         </div>
-                    </li>
+                    </li> -->
 
                     <?php if (get_setting("module_message") && can_access_messages_module()) { ?>
                         <li class="nav-item dropdown hidden-sm <?php echo ($login_user->user_type === "client" && !get_setting("client_message_users")) ? "hide" : ""; ?>">
