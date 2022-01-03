@@ -77,7 +77,8 @@ class Clients extends Security_Controller {
 
         $view_data["view"] = $this->request->getPost('view'); //view='details' needed only when loading from the client's details view
         $view_data["ticket_id"] = $this->request->getPost('ticket_id'); //needed only when loading from the ticket's details view and created by unknown client
-        $view_data['model_info'] = $this->Clients_model->get_one($client_id);
+        $view_data['model_info'] = $this->Clients_model->get_client($client_id);
+        
         $view_data["currency_dropdown"] = $this->_get_currency_dropdown_select2_data();
 
         //prepare groups dropdown list
@@ -95,6 +96,7 @@ class Clients extends Security_Controller {
 
     function save() {
         $client_id = $this->request->getPost('id');
+        $contact_id = $this->request->getPost('contact_id');
         if (!$this->can_edit_clients()) {
             app_redirect("forbidden");
         }
@@ -107,10 +109,16 @@ class Clients extends Security_Controller {
             "id" => "numeric",
         ));
 
-        $company_name = $this->request->getPost('company_name');
+        if (!$contact_id) {               
+            //validate duplicate email address
+            if ($this->Users_model->is_email_exists(trim($this->request->getPost('email')))) {
+                echo json_encode(array("success" => false, 'message' => app_lang('duplicate_email')));
+                exit();
+            }
+        }
 
         $data = array(
-            "company_name" => $company_name,
+            "company_name" => $this->request->getPost('first_name').' '.$this->request->getPost('last_name'),
             "address" => $this->request->getPost('address'),
             "city" => $this->request->getPost('city'),
             "state" => $this->request->getPost('state'),
@@ -164,6 +172,27 @@ class Clients extends Security_Controller {
                 $ticket_data = array("client_id" => $save_id);
                 $this->Tickets_model->ci_save($ticket_data, $ticket_id);
             }
+
+            //save users data
+            $user_data = array(
+                "first_name" => $this->request->getPost('first_name'),
+                "last_name" => $this->request->getPost('last_name'),
+                "phone" => $this->request->getPost('phone'),
+                "skype" => $this->request->getPost('skype'),
+                "job_title" => $this->request->getPost('job_title'),
+                "gender" => is_null($this->request->getPost('gender')) ? "" : $this->request->getPost('gender'),
+                "note" => $this->request->getPost('note')
+            );
+
+            if (!$contact_id) {               
+                //we'll save following fields only when creating a new contact from this form
+                $user_data["client_id"] = $save_id;
+                $user_data["email"] = trim($this->request->getPost('email'));
+                $user_data["password"] = password_hash($this->request->getPost("login_password"), PASSWORD_DEFAULT);
+                $user_data["created_at"] = get_current_utc_time();                   
+            }
+
+            $this->Users_model->ci_save($user_data, $contact_id);
 
             echo json_encode(array("success" => true, "data" => $this->_row_data($save_id), 'id' => $save_id, 'view' => $this->request->getPost('view'), 'message' => app_lang('record_saved')));
         } else {
@@ -845,7 +874,7 @@ class Clients extends Security_Controller {
             $this->access_only_allowed_members_or_client_contact($client_id);
             $this->can_access_this_client($client_id);
 
-            $view_data['model_info'] = $this->Clients_model->get_one($client_id);
+            $view_data['model_info'] = $this->Clients_model->get_client($client_id);
             $view_data['groups_dropdown'] = $this->_get_groups_dropdown_select2_data();
 
             $view_data["custom_fields"] = $this->Custom_fields_model->get_combined_details("clients", $client_id, $this->login_user->is_admin, $this->login_user->user_type)->getResult();

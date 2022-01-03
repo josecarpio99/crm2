@@ -11,6 +11,38 @@ class Clients_model extends Crud_model {
         parent::__construct($this->table);
     }
 
+    function get_client($id = 0)
+    {
+        $clients_table = $this->db->prefixTable('clients');
+        $users_table = $this->db->prefixTable('users');          
+        
+        if ($id) {
+            $sql = "SELECT $clients_table.* ,$users_table.id AS contact_id, $users_table.first_name, $users_table.last_name, $users_table.email,
+            $users_table.skype, $users_table.job_title, $users_table.gender
+            FROM $clients_table
+            LEFT JOIN $users_table
+            ON $users_table.client_id = $clients_table.id
+            WHERE $clients_table.id = $id;";
+            return $this->db->query($sql)->getRow(); 
+        } else {
+            $client_db_fields = $this->db->getFieldNames($clients_table);
+            $user_db_fields = $this->db->getFieldNames($users_table);
+            $fields = new \stdClass();
+            foreach ($client_db_fields as $field) {
+                $fields->$field = "";
+            }
+            $fields->contact_id = "";
+            $fields->first_name = "";
+            $fields->last_name = "";
+            $fields->email = "";
+            $fields->skype = "";
+            $fields->job_title = "";
+            $fields->gender = "";
+
+            return $fields;
+        }
+    }
+
     function get_details($options = array()) {
         $clients_table = $this->db->prefixTable('clients');
         $projects_table = $this->db->prefixTable('projects');
