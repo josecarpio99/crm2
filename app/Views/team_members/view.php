@@ -7,19 +7,7 @@
                     <div class="row p20">
                         <?php echo view("users/profile_image_section"); ?>
                     </div>
-                </div>
-
-                <div class="col-md-6 text-center cover-widget">
-                    <div class="row p20">
-                        <?php
-                        if ($show_projects_count) {
-                            echo count_project_status_widget($user_info->id);
-                        }
-
-                        echo count_total_time_widget($user_info->id);
-                        ?> 
-                    </div>
-                </div>
+                </div>                
             </div>
         </div>
     </div>
