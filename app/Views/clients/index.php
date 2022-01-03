@@ -3,7 +3,7 @@
         <ul id="client-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
             <li><a role="presentation" href="javascript:;" data-bs-target="#overview"><?php echo app_lang('overview'); ?></a></li>
             <li><a role="presentation" href="<?php echo_uri("clients/clients_list/"); ?>" data-bs-target="#clients_list"><?php echo app_lang('clients'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("clients/contacts/"); ?>" data-bs-target="#contacts"><?php echo app_lang('contacts'); ?></a></li>
+            <!-- <li><a role="presentation" href="<?php echo_uri("clients/contacts/"); ?>" data-bs-target="#contacts"><?php /* echo app_lang('contacts'); */ ?></a></li> -->
             <div class="tab-title clearfix no-border">
                 <div class="title-button-group">
                     <?php if ($can_edit_clients) { ?>                        
@@ -18,7 +18,7 @@
             </div>
 
             <div role="tabpanel" class="tab-pane fade" id="clients_list"></div>
-            <div role="tabpanel" class="tab-pane fade" id="contacts"></div>
+            <!-- <div role="tabpanel" class="tab-pane fade" id="contacts"></div> -->
         </div>
     </div>
 </div>

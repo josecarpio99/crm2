@@ -175,6 +175,7 @@ class Clients extends Security_Controller {
 
             //save users data
             $user_data = array(
+                "is_primary_contact" => 1,
                 "first_name" => $this->request->getPost('first_name'),
                 "last_name" => $this->request->getPost('last_name'),
                 "phone" => $this->request->getPost('phone'),
@@ -263,7 +264,7 @@ class Clients extends Security_Controller {
 
 
         $image_url = get_avatar($data->contact_avatar);
-        $contact = "<span class='avatar avatar-xs mr10'><img src='$image_url' alt='...'></span> $data->primary_contact";
+        $contact = "<span class='avatar avatar-xs mr10'><img src='$image_url' alt='...'></span> show";
         $primary_contact = get_client_contact_profile_link($data->primary_contact_id, $contact);
 
         $group_list = "";
@@ -290,7 +291,6 @@ class Clients extends Security_Controller {
             anchor(get_uri("clients/view/" . $data->id), $data->company_name),
             $data->primary_contact ? $primary_contact : "",
             $group_list,
-            to_decimal_format($data->total_projects),
             to_currency($data->invoice_value, $data->currency_symbol),
             to_currency($data->payment_received, $data->currency_symbol),
             to_currency($due, $data->currency_symbol)

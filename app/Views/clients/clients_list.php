@@ -38,10 +38,9 @@
             ],
             columns: [
             {title: "<?php echo app_lang("id") ?>", "class": "text-center w50"},
-            {title: "<?php echo app_lang("company_name") ?>"},
-            {title: "<?php echo app_lang("primary_contact") ?>"},
+            {title: "<?php echo app_lang("name") ?>"},
+            {title: "<?php echo app_lang("details") ?>"},
             {title: "<?php echo app_lang("client_groups") ?>"},
-            {title: "<?php echo app_lang("projects") ?>"},
             {visible: showInvoiceInfo, searchable: showInvoiceInfo, title: "<?php echo app_lang("total_invoiced") ?>"},
             {visible: showInvoiceInfo, searchable: showInvoiceInfo, title: "<?php echo app_lang("payment_received") ?>"},
             {visible: showInvoiceInfo, searchable: showInvoiceInfo, title: "<?php echo app_lang("due") ?>"}
