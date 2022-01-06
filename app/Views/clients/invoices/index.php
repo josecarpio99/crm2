@@ -38,7 +38,6 @@
             columns: [
                 {title: '<?php echo app_lang("id") ?>', "class": "w10p"},
                 {targets: [1], visible: false, searchable: false},
-                {title: "<?php echo app_lang("project") ?>"},
                 {visible: false, searchable: false},
                 {title: "<?php echo app_lang("bill_date") ?>", "class": "w10p", "iDataSort": 3},
                 {visible: false, searchable: false},
