@@ -25,8 +25,7 @@
     $("#lead-table").appTable({
     source: '<?php echo_uri("leads/list_data") ?>',
             columns: [
-            {title: "<?php echo app_lang("company_name") ?>"},
-            {title: "<?php echo app_lang("primary_contact") ?>"},
+            {title: "<?php echo app_lang("name") ?>"},
             {title: "<?php echo app_lang("owner") ?>"},
             {visible: false, searchable: false},
             {title: "<?php echo app_lang("created_date") ?>", "iDataSort": 3},

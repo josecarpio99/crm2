@@ -47,7 +47,7 @@ class Leads extends Security_Controller {
         $view_data['field_column'] = "col-md-9";
 
         $view_data["view"] = $this->request->getPost('view'); //view='details' needed only when loding from the lead's details view
-        $view_data['model_info'] = $this->Clients_model->get_one($lead_id);
+        $view_data['model_info'] = $this->Clients_model->get_client($lead_id);
         $view_data["currency_dropdown"] = $this->_get_currency_dropdown_select2_data();
         $view_data["owners_dropdown"] = $this->_get_owners_dropdown();
 
@@ -84,17 +84,18 @@ class Leads extends Security_Controller {
 
     function save() {
         $client_id = $this->request->getPost('id');
+        $contact_id = $this->request->getPost('contact_id');
+
         $this->can_access_this_lead($client_id);
 
         $this->access_only_allowed_members();
 
         $this->validate_submitted_data(array(
             "id" => "numeric",
-            "company_name" => "required"
         ));
 
         $data = array(
-            "company_name" => $this->request->getPost('company_name'),
+            "company_name" => $this->request->getPost('first_name').' '.$this->request->getPost('last_name'),
             "address" => $this->request->getPost('address'),
             "city" => $this->request->getPost('city'),
             "state" => $this->request->getPost('state'),
@@ -115,6 +116,14 @@ class Leads extends Security_Controller {
             $data["created_date"] = get_current_utc_time();
         }
 
+        if (!$contact_id) {               
+            //validate duplicate email address
+            if ($this->Users_model->is_email_exists(trim($this->request->getPost('email')))) {
+                echo json_encode(array("success" => false, 'message' => app_lang('duplicate_email')));
+                exit();
+            }
+        }
+
 
         $data = clean_data($data);
 
@@ -125,6 +134,28 @@ class Leads extends Security_Controller {
             if (!$client_id) {
                 log_notification("lead_created", array("lead_id" => $save_id), $this->login_user->id);
             }
+
+            //save users data
+            $user_data = array(
+                "is_primary_contact" => 1,
+                "first_name" => $this->request->getPost('first_name'),
+                "last_name" => $this->request->getPost('last_name'),
+                "phone" => $this->request->getPost('phone'),
+                "skype" => $this->request->getPost('skype'),
+                "job_title" => $this->request->getPost('job_title'),
+                "gender" => is_null($this->request->getPost('gender')) ? "" : $this->request->getPost('gender'),
+                "note" => $this->request->getPost('note')
+            );
+
+            if (!$contact_id) {               
+                //we'll save following fields only when creating a new contact from this form
+                $user_data["client_id"] = $save_id;
+                $user_data["email"] = trim($this->request->getPost('email'));
+                $user_data["password"] = password_hash($this->request->getPost("login_password"), PASSWORD_DEFAULT);
+                $user_data["created_at"] = get_current_utc_time();                   
+            }
+
+            $this->Users_model->ci_save($user_data, $contact_id);
 
             echo json_encode(array("success" => true, "data" => $this->_row_data($save_id), 'id' => $save_id, 'view' => $this->request->getPost('view'), 'message' => app_lang('record_saved')));
         } else {
@@ -209,7 +240,7 @@ class Leads extends Security_Controller {
 
         $row_data = array(
             anchor(get_uri("leads/view/" . $data->id), $data->company_name),
-            $data->primary_contact ? $primary_contact : "",
+            // $data->primary_contact ? $primary_contact : "",
             $owner,
             $data->created_date,
             format_to_date($data->created_date, false)
@@ -619,7 +650,7 @@ class Leads extends Security_Controller {
             $this->access_only_allowed_members();
             $this->can_access_this_lead($client_id);
 
-            $view_data['model_info'] = $this->Clients_model->get_one($client_id);
+            $view_data['model_info'] = $this->Clients_model->get_client($client_id);
             $view_data['statuses'] = $this->Lead_status_model->get_details()->getResult();
             $view_data['sources'] = $this->Lead_source_model->get_details()->getResult();
 
@@ -1007,13 +1038,13 @@ class Leads extends Security_Controller {
         $this->access_only_allowed_members();
 
         $client_id = $this->request->getPost('main_client_id');
+
         $this->can_access_this_lead($client_id);
 
         if ($client_id) {
             //save client info
             $this->validate_submitted_data(array(
                 "main_client_id" => "numeric",
-                "company_name" => "required"
             ));
 
             $company_name = $this->request->getPost('company_name');
@@ -1021,7 +1052,7 @@ class Leads extends Security_Controller {
             $client_info = $this->Clients_model->get_details(array("id" => $client_id))->getRow();
 
             $data = array(
-                "company_name" => $company_name,
+                "company_name" => $this->request->getPost('first_name').' '.$this->request->getPost('last_name'),
                 "address" => $this->request->getPost('address'),
                 "city" => $this->request->getPost('city'),
                 "state" => $this->request->getPost('state'),
@@ -1060,7 +1091,7 @@ class Leads extends Security_Controller {
                 //save custom field for client
                 if ($this->request->getPost("merge_custom_fields-$client_id")) {
                     save_custom_fields("leads", $save_client_id, $this->login_user->is_admin, $this->login_user->user_type, 0, "clients");
-                }
+                }                
 
                 $contacts = $this->Users_model->get_all_where(array("user_type" => "lead", "deleted" => 0, "status" => "active", "client_id" => $client_id))->getResult();
                 $found_primary_contact = false;

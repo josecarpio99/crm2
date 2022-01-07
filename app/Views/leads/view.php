@@ -5,9 +5,8 @@
     <?php echo modal_anchor(get_uri("leads/make_client_modal_form/") . $lead_info->id, "<i data-feather='briefcase' class='icon-16'></i> " . app_lang('make_client'), array("class" => "btn btn-primary float-end mr15", "title" => app_lang('make_client'))); ?>
 </div>
 
-<div id="page-content" class="clearfix">
+<div id="page-content" class="page-wrapper clearfix">
     <ul data-bs-toggle="ajax-tab" class="nav nav-tabs scrollable-tabs no-border-top-radius" role="tablist">
-        <li><a  role="presentation" href="<?php echo_uri("leads/contacts/" . $lead_info->id); ?>" data-bs-target="#lead-contacts"> <?php echo app_lang('contacts'); ?></a></li>
         <li><a  role="presentation" href="<?php echo_uri("leads/company_info_tab/" . $lead_info->id); ?>" data-bs-target="#lead-info"> <?php echo app_lang('lead_info'); ?></a></li>
 
         <?php if ($show_estimate_info) { ?>
@@ -48,7 +47,6 @@
         <div role="tabpanel" class="tab-pane fade" id="lead-projects"></div>
         <div role="tabpanel" class="tab-pane fade" id="lead-files"></div>
         <div role="tabpanel" class="tab-pane fade" id="lead-info"></div>
-        <div role="tabpanel" class="tab-pane fade" id="lead-contacts"></div>
         <div role="tabpanel" class="tab-pane fade" id="lead-contracts"></div>
         <div role="tabpanel" class="tab-pane fade" id="lead-estimates"></div>
         <div role="tabpanel" class="tab-pane fade" id="lead-proposals"></div>
